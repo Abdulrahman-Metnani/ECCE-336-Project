@@ -2,93 +2,220 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Scanner;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import java.util.UUID;
+
 
 public class RegisterFrame extends JFrame implements ActionListener {
 
     private static final long serialVersionUID = 1L;
 
     private JLabel titleLabel;
+    private JLabel firstNameLabel;
+    private JTextField firstNameField;
+    private JLabel lastNameLabel;
+    private JTextField lastNameField;
     private JLabel usernameLabel;
     private JTextField usernameField;
+    private JLabel emailLabel;
+    private JTextField emailField;
     private JLabel passwordLabel;
     private JPasswordField passwordField;
     private JLabel confirmPasswordLabel;
     private JPasswordField confirmPasswordField;
+    private JLabel genderLabel;
+    private JComboBox<String> genderComboBox;
+    private JLabel telephoneLabel;
+    private JTextField telephoneField;
+    private JLabel nationalityLabel;
+    private JTextField nationalityField;
+    private JLabel cityLabel;
+    private JTextField cityField;
     private JButton registerButton;
+    private String userId;
+
     public RegisterFrame() {
         setTitle("Register Form");
-        setSize(300, 300);
+        setSize(400, 550);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         getContentPane().setLayout(null);
 
         titleLabel = new JLabel("Register Form");
-        titleLabel.setBounds(100, 10, 100, 30);
+        titleLabel.setBounds(150, 10, 100, 30);
         getContentPane().add(titleLabel);
 
+        firstNameLabel = new JLabel("First Name:");
+        firstNameLabel.setBounds(20, 50, 80, 30);
+        getContentPane().add(firstNameLabel);
+
+        firstNameField = new JTextField();
+        firstNameField.setBounds(120, 50, 200, 30);
+        getContentPane().add(firstNameField);
+
+        lastNameLabel = new JLabel("Last Name:");
+        lastNameLabel.setBounds(20, 90, 80, 30);
+        getContentPane().add(lastNameLabel);
+
+        lastNameField = new JTextField();
+        lastNameField.setBounds(120, 90, 200, 30);
+        getContentPane().add(lastNameField);
+
         usernameLabel = new JLabel("Username:");
-        usernameLabel.setBounds(20, 50, 80, 30);
+        usernameLabel.setBounds(20, 130, 80, 30);
         getContentPane().add(usernameLabel);
 
         usernameField = new JTextField();
-        usernameField.setBounds(100, 50, 150, 30);
+        usernameField.setBounds(120, 130, 200, 30);
         getContentPane().add(usernameField);
 
+        emailLabel = new JLabel("Email:");
+        emailLabel.setBounds(20, 170, 80, 30);
+        getContentPane().add(emailLabel);
+
+        emailField = new JTextField();
+        emailField.setBounds(120, 170, 200, 30);
+        getContentPane().add(emailField);
+
         passwordLabel = new JLabel("Password:");
-        passwordLabel.setBounds(20, 90, 80, 30);
+        passwordLabel.setBounds(20, 210, 80, 30);
         getContentPane().add(passwordLabel);
 
         passwordField = new JPasswordField();
-        passwordField.setBounds(100, 90, 150, 30);
+        passwordField.setBounds(120, 210, 200, 30);
         getContentPane().add(passwordField);
 
         confirmPasswordLabel = new JLabel("Confirm Password:");
-        confirmPasswordLabel.setBounds(10, 130, 90, 30);
+        confirmPasswordLabel.setBounds(20, 250, 80, 30);
         getContentPane().add(confirmPasswordLabel);
 
         confirmPasswordField = new JPasswordField();
-        confirmPasswordField.setBounds(100, 131, 150, 30);
+        confirmPasswordField.setBounds(120, 250, 200, 30);
         getContentPane().add(confirmPasswordField);
 
+        genderLabel = new JLabel("Gender:");
+        genderLabel.setBounds(20, 290, 80, 30);
+        getContentPane().add(genderLabel);
+
+        String[] genders = {"Male", "Female", "Attack Helicopter"};
+        genderComboBox = new JComboBox<String>(genders);
+        genderComboBox.setBounds(120, 290, 200, 30);
+        getContentPane().add(genderComboBox); telephoneLabel = new JLabel("Telephone:");
+        telephoneLabel.setBounds(20, 330, 80, 30);
+        getContentPane().add(telephoneLabel);
+
+        telephoneField = new JTextField();
+        telephoneField.setBounds(120, 330, 200, 30);
+        getContentPane().add(telephoneField);
+
+        nationalityLabel = new JLabel("Nationality:");
+        nationalityLabel.setBounds(20, 370, 80, 30);
+        getContentPane().add(nationalityLabel);
+
+        nationalityField = new JTextField();
+        nationalityField.setBounds(120, 370, 200, 30);
+        getContentPane().add(nationalityField);
+
+        cityLabel = new JLabel("City:");
+        cityLabel.setBounds(20, 410, 80, 30);
+        getContentPane().add(cityLabel);
+
+        cityField = new JTextField();
+        cityField.setBounds(120, 410, 200, 30);
+        getContentPane().add(cityField);
+
+        // Register button
         registerButton = new JButton("Register");
-        registerButton.setBounds(80, 180, 140, 30);
+        registerButton.setBounds(100, 450, 140, 30);
         registerButton.addActionListener(this);
         getContentPane().add(registerButton);
-    }
-
+        }
+        
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == registerButton) {
+            // Get user input
             String username = usernameField.getText();
             String password = new String(passwordField.getPassword());
             String confirmPassword = new String(confirmPasswordField.getPassword());
-            if (username.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
+            String email = emailField.getText();
+            String firstName = firstNameField.getText();
+            String lastName = lastNameField.getText();
+            String gender = genderComboBox.getSelectedItem().toString();
+            String telephone = telephoneField.getText();
+            String nationality = nationalityField.getText();
+            String city = cityField.getText();
+
+            // Check if all fields are filled
+            if (username.isEmpty() || password.isEmpty() || confirmPassword.isEmpty() || email.isEmpty() ||
+                    firstName.isEmpty() || lastName.isEmpty() || telephone.isEmpty() || nationality.isEmpty() || city.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Please fill all the fields.");
             } else if (!password.equals(confirmPassword)) {
-                JOptionPane.showMessageDialog(this, "Passwords don't match.");
+                JOptionPane.showMessageDialog(this, "Passwords do not match.");
+                
             } else {
+            	 // Check if the email is in proper format
+                String emailPattern = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
+                if (!email.matches(emailPattern)) {
+                    JOptionPane.showMessageDialog(this, "Please enter a valid email address...");
+                    return;
+                }
+                // Check if username or email is already taken
+                boolean usernameTaken = false;
+                boolean emailTaken = false;
                 try {
-                    File file = new File("users.txt");
-                    FileWriter writer = new FileWriter(file, true);
-                    BufferedWriter buffer = new BufferedWriter(writer);
-                    buffer.write(username + " " + password);
-                    buffer.newLine();
-                    buffer.close();
-                    JOptionPane.showMessageDialog(this, "Registration successful.");
-                } catch (IOException ex) {
-                    JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage());
-                }    
-               
-
+                    File file = new File("users.txt"); // Replace with your file name
+                    Scanner scanner = new Scanner(file);
+                    while (scanner.hasNextLine()) {
+                        String line = scanner.nextLine();
+                        String[] parts = line.split(",");
+                        if (parts[0].equals(username)) {
+                            usernameTaken = true;
+                            break;
+                        }
+                        if (parts[3].equals(email)) {
+                            emailTaken = true;
+                            break;
+                        }
+                    }
+                    scanner.close();
+                } catch (FileNotFoundException ex) {
+                    ex.printStackTrace();
+                }
+                if (usernameTaken) {
+                    JOptionPane.showMessageDialog(this, "Username already taken.");
+                } else if (emailTaken) {
+                    JOptionPane.showMessageDialog(this, "Email already taken.");
+                } else {
+                    // Generate a unique ID for the user
+                    String uuid = UUID.randomUUID().toString();
+                    userId = uuid;
+                    // Save user info to file or database
+                    try {
+                        FileWriter fw = new FileWriter("users.txt", true); // Replace with your file name
+                        BufferedWriter bw = new BufferedWriter(fw);
+                        bw.write(userId +","+ username + "," + password + "," + firstName + "," + email + "," + gender + "," + telephone + "," + nationality + "," + city + "\n");
+                        bw.close();
+                        JOptionPane.showMessageDialog(this, "Registration successful!");
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    }
+                }
             }
         }
     }
 }
+
+       
+        
+    
