@@ -204,7 +204,7 @@ public class RegisterFrame extends JFrame implements ActionListener {
                     try {
                         FileWriter fw = new FileWriter("users.txt", true); // Replace with your file name
                         BufferedWriter bw = new BufferedWriter(fw);
-                        bw.write(userId +","+ username + "," + password + "," + firstName + "," + email + "," + gender + "," + telephone + "," + nationality + "," + city + "\n");
+                        bw.write(userId +","+ username + "," + password + "," + firstName + "," + lastName+ "," + email + "," + gender + "," + telephone + "," + nationality + "," + city + "\n");
                         bw.close();
                         JOptionPane.showMessageDialog(this, "Registration successful!");
                     } catch (IOException ex) {
